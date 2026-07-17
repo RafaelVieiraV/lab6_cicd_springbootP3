@@ -32,7 +32,7 @@ public class WalletServiceTest {
     @Test
     void createAccount_validData_shouldSaveAndReturnResponse() {
         //ARRANGE
-        String email = "jrvieira@espe.edu.ec";
+        String email = "git jrvieira@espe.edu.ec";
         double initialBalance = 100.00;
 
         Mockito.when(riskClient.isBlocked(email)).thenReturn(false);
