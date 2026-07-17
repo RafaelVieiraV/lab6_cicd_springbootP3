@@ -1,0 +1,37 @@
+name: CD
+
+# Actividad extra 2: Despliegue Continuo.
+# Se ejecuta únicamente ante cambios (push) en la rama main.
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Dar permisos de ejecución a gradlew
+        run: chmod +x gradlew
+
+      - name: Ejecutar pruebas automatizadas
+        run: ./gradlew test
+
+      - name: Construir el proyecto con Gradle (genera el .jar)
+        run: ./gradlew build
+
+      - name: Publicar el .jar como artefacto del workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: wallet-service-jar
+          path: build/libs/*.jar
+          retention-days: 14
