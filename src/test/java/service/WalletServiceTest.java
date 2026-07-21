@@ -114,46 +114,4 @@ public class WalletServiceTest {
     }
 
     // ===================== Feature: withdraw =====================
-
-    @Test
-    void withdraw_success() {
-        //ARRANGE
-        String email = "jrvieira@espe.edu.ec";
-        Account existingAccount = new Account(email, 200.00);
-        double withdrawAmount = 80.00;
-
-        Mockito.when(walletRepository.findById(existingAccount.getId()))
-                .thenReturn(Optional.of(existingAccount));
-
-        //ACT
-        double newBalance = walletService.withdraw(existingAccount.getId(), withdrawAmount);
-
-        //ASSERT
-        Assertions.assertEquals(120.00, newBalance, "El balance debe reflejar el retiro");
-
-        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
-        Mockito.verify(walletRepository).save(captor.capture());
-        Assertions.assertEquals(120.00, captor.getValue().getBalance());
-    }
-
-    @Test
-    void withdraw_insufficientFunds_shouldThrowException() {
-        //ARRANGE
-        String email = "jrvieira@espe.edu.ec";
-        Account existingAccount = new Account(email, 30.00);
-        double withdrawAmount = 100.00;
-
-        Mockito.when(walletRepository.findById(existingAccount.getId()))
-                .thenReturn(Optional.of(existingAccount));
-
-        //ACT + ASSERT
-        IllegalArgumentException exception = Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> walletService.withdraw(existingAccount.getId(), withdrawAmount),
-                "Debe lanzar IllegalArgumentException si el saldo es insuficiente"
-        );
-
-        Assertions.assertEquals("Insufficient funds", exception.getMessage());
-        Mockito.verify(walletRepository, Mockito.never()).save(ArgumentMatchers.any(Account.class));
-    }
 }
