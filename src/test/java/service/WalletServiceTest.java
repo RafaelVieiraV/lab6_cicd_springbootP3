@@ -118,7 +118,7 @@ public class WalletServiceTest {
     @Test
     void withdraw_success() {
         //ARRANGE
-        String email = "fajimenez4@espe.edu.ec";
+        String email = "jrvieira@espe.edu.ec";
         Account existingAccount = new Account(email, 200.00);
         double withdrawAmount = 80.00;
 
@@ -139,7 +139,7 @@ public class WalletServiceTest {
     @Test
     void withdraw_insufficientFunds_shouldThrowException() {
         //ARRANGE
-        String email = "fajimenez4@espe.edu.ec";
+        String email = "jrvieira@espe.edu.ec";
         Account existingAccount = new Account(email, 30.00);
         double withdrawAmount = 100.00;
 
