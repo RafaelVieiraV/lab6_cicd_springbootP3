@@ -67,4 +67,27 @@ public class WalletService {
         //Retornar el balance de la cuenta
         return account.getBalance();
     }
+
+    //Retirar dinero de una cuenta existente (funcionalidad de la rama feature/withdraw)
+    public double withdraw(String id, double amount) {
+        //amount > 0
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be > 0");
+        }
+
+        //wallet debe existir
+        Account account = walletRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        //saldo suficiente (si no, excepción)
+        if (account.getBalance() < amount) {
+            throw new IllegalArgumentException("Insufficient funds");
+        }
+
+        //actualizar saldo y guardar
+        account.retirar(amount);
+        walletRepository.save(account);
+
+        return account.getBalance();
+    }
 }
